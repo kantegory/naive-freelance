@@ -2,6 +2,8 @@
 
 Привет. Сегодня мы рассмотрим авторизацию + регистрацию на django, используя Djoser. Сначала разберём метод со стандартным модулем для токенов внутри DRF.
 
+[Видео](https://youtu.be/RFJw7rUkWNs)
+
 ## Djoser + DRF
 
 [Подробнее тут](https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication)
@@ -57,7 +59,7 @@ class Logout(APIView):
 
 ...
 	# для каждого view, который должен быть защищён
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_class = permissions.IsAuthenticatedOrReadOnly
 
 ...
 ```
@@ -125,28 +127,28 @@ $ curl \
 }
 ```
 
-### freelance/views.py
+### freelance/views.py (на примере модели Executor)
 
 ```python
 from rest_framework import permissions
 from rest_framework.exceptions import PermissionDenied
 
 
-class IsOwner(permissions.BasePermission):
+class IsExecutor(permissions.BasePermission):
     
     def has_object_permission(self, request, view, obj):
-        return obj.owner == request.user
+        return obj.user == request.user
 
 
 # для любого view, который нужно закрыть
 ...
-    permission_classes = (IsOwner,)
+    permission_classes = (IsExecutor,)
 
     def get_queryset(self):
         user = self.request.user
         
         if user.is_authenticated:
-            return Model.objects.filter(owner=user)
+            return Executor.objects.filter(user=user)
         
         raise PermissionDenied()
 ```
