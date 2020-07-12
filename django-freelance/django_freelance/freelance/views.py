@@ -26,17 +26,17 @@ class ExecutorRetrieveView(generics.RetrieveAPIView):
 
 
 class ExecutorUpdateView(generics.UpdateAPIView):
-    # queryset = Executor.objects.all()
+    queryset = Executor.objects.all()
     serializer_class = CreateExecutorSerializer
-    permission_classes = (IsExecutor,)
+    # permission_classes = (IsExecutor,)
 
-    def get_queryset(self):
-        user = self.request.user
+    # def get_queryset(self):
+    #     user = self.request.user
         
-        if user.is_authenticated:
-            return Executor.objects.filter(user=user)
+    #     if user.is_authenticated:
+    #         return Executor.objects.filter(user=user)
         
-        raise PermissionDenied()
+    #     raise PermissionDenied()
 
 
 class ExecutorCreateView(generics.CreateAPIView):
