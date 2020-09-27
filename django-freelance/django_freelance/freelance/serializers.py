@@ -143,7 +143,7 @@ class AuthoringSerializer(serializers.ModelSerializer):
     executor = ExecutorSerializer()
 
     class Meta:
-        model = Ordering
+        model = Authoring
         fields = '__all__'
 
 
