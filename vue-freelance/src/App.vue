@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="app-wrapper">
     <header class="bg-dark">
       <b-navbar class="w-75 mx-auto" type="dark" variant="dark">
         <b-navbar-brand>Naive freelance</b-navbar-brand>
@@ -11,11 +11,11 @@
         </b-navbar-nav>
       </b-navbar>
     </header>
-    <div class="container-fluid my-5">
+    <main class="container-fluid my-5">
       <router-view />
-    </div>
+    </main>
     <footer>
-      <b-jumbotron bg-variant="dark" text-variant="white">
+      <b-jumbotron bg-variant="dark" text-variant="white" class="rounded-0 mb-0">
         <div class="w-75 mx-auto">
           <div class="row">
             <div class="col-4 text-left">© Naive freelance, 2020</div>
@@ -39,8 +39,20 @@ export default {
   font-size: 16pt;
 }
 
+header {
+  height: 70px;
+}
+
+main {
+  height: calc(100vh - 160px - 70px * 2);
+  min-height: 550px;
+}
+
 footer {
   font-size: 20pt;
 }
 
+footer .jumbotron {
+  height: 160px;
+}
 </style>
