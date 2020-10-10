@@ -1,30 +1,33 @@
 <template>
   <div class="w-50 border rounded p-3 mx-auto">
     <b-form @submit="register">
-      <div class="form-group">
-        <label for="username">Логин:</label>
+      <div class="form-group required">
+        <label class="control-label" for="username">Логин:</label>
         <b-input v-model="username" type="text" id="username" placeholder="Логин..."></b-input>
       </div>
-      <div class="form-group">
-        <label for="phone">Номер телефона:</label>
-        <b-input v-model="phone" type="text" id="phone" placeholder="+7 (921) 123 45 67"></b-input>
-        <p><small class="text-muted">Введите номер в формате: +7 (921) 123 45 67</small></p>
+      <div class="form-group required">
+        <label class="control-label" for="phone">Номер телефона:</label>
+        <b-input v-model="phone" type="text" id="phone" v-imask="phoneNumberMask" placeholder="+7(921)123-45-67" @keypress="isNumber" @accept="onAccept" @complete="onComplete" maxlength="16"></b-input>
+        <p><small class="text-muted">Введите номер в формате: +7(921)123-45-67</small></p>
       </div>
-      <div class="form-group">
-        <label for="customerOrExecutor">Вы заказчик или исполнитель?</label>
+      <div class="form-group required">
+        <label class="control-label" for="customerOrExecutor">Вы заказчик или исполнитель?</label>
         <b-select v-model="customerOrExecutor" :options="customerOrExecutorOptions" type="customerOrExecutor" id="customerOrExecutor">
         </b-select>
       </div>
-      <div class="form-group">
-        <label for="password">Пароль:</label>
+      <div class="form-group required">
+        <label class="control-label" for="password">Пароль:</label>
         <b-input v-model="password" type="password" id="password" placeholder="Пароль..."></b-input>
         <p><small class="text-muted">Минимальная длина пароля 8 символов</small></p>
       </div>
-      <div class="form-group">
-        <label for="repeatPassword">Повторите пароль:</label>
+      <div class="form-group required">
+        <label class="control-label" for="repeatPassword">Повторите пароль:</label>
         <b-input v-model="repeatPassword" type="password" id="repeatPassword" placeholder="Повторите пароль..."></b-input>
       </div>
+      <p class="text-danger" v-if="!$v.password.minLength">Длина пароля меньше 8 символов</p>
+      <p class="text-danger" v-if="$v.password.required && $v.repeatPassword.required && !$v.repeatPassword.sameAs">Введённые пароли не совпадают</p>
       <b-button variant="primary" type="submit" :disabled="formValid">Регистрация</b-button>
+      <p class="mt-2"><small class="text-muted">Все поля отмеченные <span class="text-danger">*</span> обязательны для заполнения.</small></p>
       <p class="mt-3">Уже есть аккаунт? <router-link to="/auth/signin">Вход</router-link>
       </p>
     </b-form>
@@ -32,6 +35,7 @@
 </template>
 <script>
 import { required, minLength, sameAs } from 'vuelidate/lib/validators'
+import { IMaskDirective } from 'vue-imask';
 
 export default {
   name: "SignUp",
@@ -41,13 +45,18 @@ export default {
       password: "",
       repeatPassword: "",
       phone: "",
+      userPhone: "",
       customerOrExecutor: "",
       customerOrExecutorOptions: [
         { text: 'Выберите...', value: '', disabled: true, selected: true },
         { text: 'Заказчик', value: 'customer' },
         { text: 'Исполнитель', value: 'executor' }
-      ]
-    };
+      ],
+      phoneNumberMask: {
+        mask: '+{7}(000)000-00-00',
+        lazy: true
+      }
+    }
   },
   validations: {
     username: {
@@ -62,6 +71,9 @@ export default {
       sameAs: sameAs('password')
     },
     phone: {
+      required
+    },
+    customerOrExecutor: {
       required
     }
   },
@@ -85,10 +97,33 @@ export default {
           console.error(err);
           this.err = err
         })
+    },
+    onAccept(e) {
+      const maskRef = e.detail
+      this.phone = maskRef.value
+    },
+    onComplete(e) {
+      const maskRef = e.detail
+      this.userPhone = maskRef.unmaskedValue
+    },
+    isNumber(e) {
+      let regex = /[0-9]/
+
+      if (!regex.test(e.key)) {
+        e.returnValue = false;
+        if (e.preventDefault) e.preventDefault();
+      }
     }
+  },
+  directives: {
+    imask: IMaskDirective
   }
 };
 
 </script>
 <style>
+.form-group.required .control-label:after {
+  content:" *";
+  color:red;
+}
 </style>
