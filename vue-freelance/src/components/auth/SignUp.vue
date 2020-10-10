@@ -4,6 +4,7 @@
       <div class="form-group required">
         <label class="control-label" for="username">Логин:</label>
         <b-input v-model="username" type="text" id="username" placeholder="Логин..."></b-input>
+        <p><small class="text-muted">Минимальная длина логина 5 символов</small></p>
       </div>
       <div class="form-group required">
         <label class="control-label" for="phone">Номер телефона:</label>
@@ -60,7 +61,8 @@ export default {
   },
   validations: {
     username: {
-      required
+      required,
+      minLength: minLength(5)
     },
     password: {
       required,
