@@ -19,13 +19,13 @@
       <div class="form-group required">
         <label class="control-label" for="password">Пароль:</label>
         <b-input v-model="password" type="password" id="password" placeholder="Пароль..."></b-input>
-        <p><small class="text-muted">Минимальная длина пароля 8 символов</small></p>
+        <p><small class="text-muted">Минимальная длина пароля 6 символов</small></p>
       </div>
       <div class="form-group required">
         <label class="control-label" for="repeatPassword">Повторите пароль:</label>
         <b-input v-model="repeatPassword" type="password" id="repeatPassword" placeholder="Повторите пароль..."></b-input>
       </div>
-      <p class="text-danger" v-if="!$v.password.minLength">Длина пароля меньше 8 символов</p>
+      <p class="text-danger" v-if="!$v.password.minLength">Длина пароля меньше 6 символов</p>
       <p class="text-danger" v-if="$v.password.required && $v.repeatPassword.required && !$v.repeatPassword.sameAs">Введённые пароли не совпадают</p>
       <b-button variant="primary" type="submit" :disabled="formValid">Регистрация</b-button>
       <p class="mt-2"><small class="text-muted">Все поля отмеченные <span class="text-danger">*</span> обязательны для заполнения.</small></p>
@@ -36,7 +36,7 @@
 </template>
 <script>
 import { required, minLength, sameAs } from 'vuelidate/lib/validators'
-import { IMaskDirective } from 'vue-imask';
+import { IMaskDirective } from 'vue-imask'
 
 export default {
   name: "SignUp",

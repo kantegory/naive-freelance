@@ -45,10 +45,11 @@ header {
 
 main {
   height: calc(100vh - 160px - 70px * 2);
-  min-height: 550px;
+  min-height: 600px;
 }
 
 footer {
+  margin-top: 120px;
   font-size: 20pt;
 }
 
