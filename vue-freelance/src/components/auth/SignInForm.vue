@@ -2,11 +2,11 @@
   <b-form @submit="login">
     <div class="form-group">
       <label for="username">Логин:</label>
-      <b-input v-model="username" type="text" id="username" placeholder="Логин..."></b-input>
+      <b-input v-model="form.username" type="text" id="username" placeholder="Логин..."></b-input>
     </div>
     <div class="form-group">
       <label for="password">Пароль:</label>
-      <b-input v-model="password" type="password" id="password" placeholder="Пароль..."></b-input>
+      <b-input v-model="form.password" type="password" id="password" placeholder="Пароль..."></b-input>
     </div>
     <b-button variant="primary" type="submit">Войти</b-button>
     <p class="mt-3">Ещё не зарегистрированы? <router-link to="/auth/signup">Регистрация</router-link>
@@ -18,8 +18,10 @@ export default {
   name: "SignInForm",
   data() {
     return {
-      username: "",
-      password: ""
+      form: {
+        username: "",
+        password: ""
+      }
     };
   },
   methods: {
@@ -28,7 +30,8 @@ export default {
 
       // логика авторизации
       this.axios
-        .post(`http://localhost:8000/api/auth/token/`, { headers: { 'Content-type': 'application/json' }, 'username': this.username, 'password': this.password })
+        .post(`http://localhost:8080/api/auth/token/`, this.form,
+        { headers: { 'Content-type': 'application/json' }})
         .then(response => { this.setLogined(response.data.token) })
         .catch(err => { console.error(err) })
     },
