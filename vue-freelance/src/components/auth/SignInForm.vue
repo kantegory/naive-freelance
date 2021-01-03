@@ -33,12 +33,15 @@ export default {
   methods: {
     async login () {
       // логика авторизации
-      const response = await this.authRequest('auth/token', this.form)
+      try {
+        const response = await this.authRequest('auth/token', this.form)
 
-      console.log(response)
-
-      // авторизуем юзера
-      this.setLogined(response.data.token)
+        // авторизуем юзера
+        this.setLogined(response.data.token)
+        
+      } catch (error) {
+        console.error('AN API ERROR:', error)
+      }
     },
 
     setLogined (token) {
