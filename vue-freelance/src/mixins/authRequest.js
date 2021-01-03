@@ -22,22 +22,18 @@ const authRequest = {
       
       const __url = `${BASE_URL}/${url}/`
 
-      try {
-        const response = await this.axios({
-          method: 'POST',
-          url: __url, 
-          data: data,
-          headers: DEFAULT_HEADERS
-        })
+      const response = await this.axios({
+        method: 'POST',
+        url: __url, 
+        data: data,
+        headers: DEFAULT_HEADERS
+      })
 
-        if (response.status !== 200 && response.status !== 201) {
-          throw new Error(response.error)
-        }
-
-        return response.data
-      } catch (e) {
-        console.error('AN API ERROR', e)
+      if (response.status !== 200 && response.status !== 201) {
+        throw new Error(response.error)
       }
+
+      return response.data
     }
   }
 }
