@@ -1,14 +1,15 @@
 <template>
-  <div class="w-25 mx-auto border p-3 rounded">
-      <sign-in-form />
-  </div>
+  <base-auth-layout>
+    <sign-in-form />
+  </base-auth-layout>
 </template>
 <script>
 import SignInForm from '@/components/auth/SignInForm.vue'
+import BaseAuthLayout from '@/layouts/BaseAuthLayout.vue'
 
 export default {
   name: "SignIn",
 
-  components: { SignInForm }
+  components: { SignInForm, BaseAuthLayout }
 }
 </script>
