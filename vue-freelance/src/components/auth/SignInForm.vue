@@ -1,5 +1,5 @@
 <template>
-  <b-form @submit="login">
+  <b-form @submit.prevent="login">
     <div class="form-group">
       <label for="username">Логин:</label>
       <b-input v-model="form.username" type="text" id="username" placeholder="Логин..."></b-input>
@@ -14,9 +14,12 @@
   </b-form>
 </template>
 <script>
+import authRequest from '@/mixins/authRequest'
+
 export default {
   name: "SignInForm",
-  data() {
+
+  data () {
     return {
       form: {
         username: "",
@@ -24,19 +27,21 @@ export default {
       }
     };
   },
+
+  mixins: [ authRequest ],
+
   methods: {
-    login(event) {
-      event.preventDefault();
-
+    async login () {
       // логика авторизации
-      this.axios
-        .post(`http://localhost:8080/api/auth/token/`, this.form,
-        { headers: { 'Content-type': 'application/json' }})
-        .then(response => { this.setLogined(response.data.token) })
-        .catch(err => { console.error(err) })
-    },
-    setLogined(token) {
+      const response = await this.authRequest('auth/token', this.form)
 
+      console.log(response)
+
+      // авторизуем юзера
+      this.setLogined(response.data.token)
+    },
+
+    setLogined (token) {
       // сохраняем токен
       console.log(token);
       localStorage.setItem('token', token);
